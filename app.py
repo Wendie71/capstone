@@ -19,7 +19,7 @@ age = st.number_input(
     "Age (in years)",
     min_value=1,
     max_value=120,
-    value=30,
+    value=23,
     help="Enter the patient's age."
 )
 
@@ -78,29 +78,12 @@ heart_disease = st.selectbox(
     help="Select whether the patient has heart disease."
 )
 
-smoking_history = st.selectbox(
-    "Patient's Smoking History",
-    [
-        "Current",
-        "ever",
-        "Former",
-        "Never",
-        "not current"
-    ],
-    help="Select the patient's smoking history."
-)
-
 # Prediction button
 if st.button("Predict Diabetes Risk"):
 
      # Convert Yes/No variables to 0/1
     hypertension_value = 1 if hypertension == "Yes" else 0
     heart_disease_value = 1 if heart_disease == "Yes" else 0
-
-    # One-hot encode smoking history
-    smoking_current = 1 if smoking_history == "Current" else 0
-    smoking_former = 1 if smoking_history == "Former" else 0
-    smoking_never = 1 if smoking_history == "Never" else 0
 
     patient = pd.DataFrame({
         "age": [age],
@@ -109,12 +92,11 @@ if st.button("Predict Diabetes Risk"):
         "bmi": [bmi],
         "HbA1c_level": [hba1c],
         "blood_glucose_level": [glucose],
-        "smoking_history": [smoking_history]
     })
 
-    patient[['age','bmi','HbA1c_level','blood_glucose_level','smoking_history']] = (
+    patient[['age','bmi','HbA1c_level','blood_glucose_level']] = (
         scaler.transform(
-            patient[['age','bmi','HbA1c_level','blood_glucose_level', 'smoking_history']]
+            patient[['age','bmi','HbA1c_level','blood_glucose_level']]
         )
     )
 
